@@ -1,8 +1,9 @@
+import SuperTaster from "./SuperTaster.js";
 
-export default class Taster {
+export default class Taster extends SuperTaster {
 
     constructor() {
-        
+
     }
 
 }

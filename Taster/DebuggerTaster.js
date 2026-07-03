@@ -1,9 +1,9 @@
-import Debugger from "../Debugger/Debugger.js";
-import Taster from "./Taster.js";
+import cdebugger from "../Debugger/cdebugger.js";
+import SuperTaster from "./SuperTaster.js";
 
-export default class DebuggerTaster extends Taster {
+export default class DebuggerTaster extends SuperTaster {
 
-    debugger = new Debugger
+    debugger = new cdebugger
     constructor() {
         super();
         this.debugger.log('hello world');
