@@ -32,3 +32,7 @@ export default class EventCaller {
         // TODO: 연결된 EventInstance를 찾아 resolve를 호출합니다.
     }
 }
+
+export const debugCode = args => {
+    
+}

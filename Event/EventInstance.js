@@ -21,6 +21,7 @@ export default class EventInstance {
     /** @param {Object} param0 @param {string} [param0.id] @param {EventRepository} param0.repository @param {Array<EventCaller>} param0.callers @param {Array<EventAction>} [param0.actions] @param {resolveInEventInstance} [param0.resolve] */
     constructor({ id = "", repository, callers = [], actions = [], resolve}) {
         this.id = id;
+        this.symbol = Symbol(id);
         this.repository = repository;
         this.callers = callers;
         this.actions = actions;

@@ -5,11 +5,11 @@
  */
 export default class EventRepository {
     constructor() {
-        /** @type {Map<string, Function>} */
+        /** @type {Map<Symbol, Function>} */
         this.resolverMap = new Map();
-        /** @type {Map<string, import("./EventCaller.js").default>} */
+        /** @type {Map<Symbol, import("./EventCaller.js").default>} */
         this.eventCallerMap = new Map();
-        /** @type {Map<string, import("./EventInstance.js").default>} */
+        /** @type {Map<Symbol, import("./EventInstance.js").default>} */
         this.eventInstanceMap = new Map();
         this.bound = false;
     }
