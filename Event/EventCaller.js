@@ -3,11 +3,17 @@ import EventRepository from "./EventRepository.js";
 /**
  * EventCaller
  * - 특정 DOM 이벤트를 감지하고 EventInstance를 호출합니다.
+ * @member {EventRepository} EventCaller.repository
+ * @member {typeof Event} EventCaller.eventClass
+ * @member {keyof HTMLElementEventMap} EventCaller.eventName
+ * @member {HTMLElement} EventCaller.target
+ * @member {boolean} EventCaller.bound
  */
 export default class EventCaller {
-    /** @param {Object} param0 @param {EventRepository} param0.repository @param {typeof Event} [param0.eventClass=Event] @param {keyof HTMLElementEventMap} [param0.eventName=""] @param {HTMLElement} param0.target */
-    constructor({ repository, eventClass = Event, eventName, target} = {}) {
-        /** @type {import("./EventRepository.js").default|null} */
+    /**
+     * @param {Object} param0 @param {EventRepository} param0.repository @param {typeof Event} param0.eventClass @param {keyof HTMLElementEventMap} param0.eventName @param {HTMLElement} param0.target
+     */
+    constructor({ repository, eventClass = Event, eventName, target } = {}) {
         this.repository = repository;
         this.eventClass = eventClass;
         this.eventName = eventName;
