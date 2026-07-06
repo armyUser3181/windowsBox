@@ -23,13 +23,13 @@ export default class EventCaller {
 
     /** repository에 자신을 등록하고 이벤트 수신을 시작합니다. */
     bind() {
-        // TODO: repository에 등록하고, 필요한 resolver를 준비합니다.
+        this.repository.bindOnResolver(this);
         this.bound = true;
     }
 
     /** repository에서 자신을 제거하고 이벤트 수신을 중지합니다. */
     unbind() {
-        // TODO: repository에서 바인딩을 해제합니다.
+        this.repository.unbindOnResolver(this);
         this.bound = false;
     }
 

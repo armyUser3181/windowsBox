@@ -28,11 +28,11 @@ export default class EventInstance {
     }
 
     bind() {
-        
         this.bound = true;
     }
 
     unbind() {
+        
         this.bound = false;
     }
 

@@ -41,42 +41,62 @@ export default class EventRepository {
         this.bound = false;
     }
 
-    /** EventCaller에 필요한 resolver를 생성하거나 갱신합니다. */
-    renew() {
-        // TODO: caller 정보를 바탕으로 resolver를 구성합니다.
-        this.eventCallerMap.forEach((caller, key) => {
-            const target = caller.target;
-            const eventType = caller.eventName;
-            if (!this.targetEventMap.has(target)) {
-                this.targetEventMap.set(target, new Map());
-            }
-            if (!this.targetEventMap.get(target).has(eventType)) {
-                const callers = new Map();
-                callers.set(key, caller);
-                const resolver = (event) => {
-                    // TODO: caller의 execute를 호출합니다.
-                    callers.forEach((caller) => {
-                        caller.call(event);
-                    });
-                };
-                this.targetEventMap.get(target).set(eventType, { resolver: resolver, callers: callers });
-                
-            }
-        });
-
+    bindOnResolver(caller) {
+        const key = caller.id;
+        const target = caller.target;
+        const eventType = caller.eventName;
+        if (!this.targetEventMap.has(target)) {
+            this.targetEventMap.set(target, new Map());
+        }
+        if (!this.targetEventMap.get(target).has(eventType)) {
+            const callers = new Map();
+            callers.set(key, caller);
+            const resolver = (event) => {
+                callers.forEach((caller) => {
+                    caller.call(event);
+                });
+            };
+            this.targetEventMap.get(target).set(eventType, { resolver: resolver, callers: callers });
+        } else {
+            this.targetEventMap.get(target).get(eventType).callers.set(key, caller);
+        }
+        return this;
     }
 
-    
-
-    /** EventInstance를 저장소에 추가합니다. */
-    push(eventInstance) {
-        if (!eventInstance || !eventInstance.id) return;
-        this.eventInstanceMap.set(eventInstance.id, eventInstance);
+    unbindOnResolver(caller) {
+        const key = caller.id;
+        const target = caller.target;
+        const eventType = caller.eventName;
+        if( !this.targetEventMap.has(target) ) return this;
+        if( !this.targetEventMap.get(target).has(eventType) ) return this;
+        const pair = this.targetEventMap.get(target).get(eventType);
+        pair.callers.delete(key);
+        if(pair.callers.size == 0) {
+            target.removeEventListener(eventType, pair.resolver);
+            this.targetEventMap.get(target).delete(eventType);
+        }
+        return this;
     }
 
-    /** EventInstance를 저장소에서 제거합니다. */
-    remove(eventInstance) {
-        if (!eventInstance || !eventInstance.id) return;
-        this.eventInstanceMap.delete(eventInstance.id);
+    push(value) {
+        if (!value || !value.id) return this;
+        if (value && value.id && value instanceof EventInstance) {
+            this.eventInstanceMap.set(value.id, value);
+        }
+        if (value instanceof EventCaller) {
+            this.eventCallerMap.set(value.id, value);
+        }
+        return this;
+    }
+
+    remove(value) {
+        if (!value || !value.id) return this;
+        if (value instanceof EventInstance) {
+            this.eventInstanceMap.delete(value.id);
+        }
+        if (value instanceof EventCaller) {
+            this.eventCallerMap.delete(value.id);
+        }
+        return this;
     }
 }
